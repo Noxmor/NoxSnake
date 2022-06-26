@@ -158,18 +158,33 @@ namespace NoxSnake {
 
 	Direction MoveClosest(const Segment& head, const Apple apple)
 	{
-		if (apple.x < head.x)
-			return Direction::Left;
+		Direction moveDir = Direction::None;
 		
-		if(apple.x > head.x)
-			return Direction::Right;
+		const int32_t dx = head.x - apple.x;
+		const int32_t dy = head.y - apple.y;
 
-		if (apple.y < head.y)
-			return Direction::Up;
+		const uint32_t distanceX = dx < 0 ? -dx : dx;
+		const uint32_t distanceY = dy < 0 ? -dy : dy;
 		
-		if(apple.y > head.y)
-			return Direction::Down;
+		if (distanceX > distanceY)
+			moveDir = dx < 0 ? Direction::Right : Direction::Left;
+		else
+			moveDir = dy < 0 ? Direction::Down : Direction::Up;
 
-		return Direction::None;
+		if (moveDir == Direction::Down && head.NextMoveDir == Direction::Up)
+			moveDir = Direction::Left;
+
+		if (moveDir == Direction::Up && head.NextMoveDir == Direction::Down)
+			moveDir = Direction::Right;
+
+		if (moveDir == Direction::Left && head.NextMoveDir == Direction::Right)
+			moveDir = Direction::Up;
+
+		if (moveDir == Direction::Right && head.NextMoveDir == Direction::Left)
+			moveDir = Direction::Down;
+
+		return moveDir;
 	}
+
+
 }
