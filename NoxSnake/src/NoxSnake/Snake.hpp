@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NoxSnake/Board.hpp"
+#include "NoxSnake/Apple.hpp"
 
 namespace NoxSnake {
 
@@ -155,4 +156,20 @@ namespace NoxSnake {
 		return head.NextMoveDir;
 	}
 
+	Direction MoveClosest(const Segment& head, const Apple apple)
+	{
+		if (apple.x < head.x)
+			return Direction::Left;
+		
+		if(apple.x > head.x)
+			return Direction::Right;
+
+		if (apple.y < head.y)
+			return Direction::Up;
+		
+		if(apple.y > head.y)
+			return Direction::Down;
+
+		return Direction::None;
+	}
 }
